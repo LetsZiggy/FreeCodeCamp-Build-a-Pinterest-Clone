@@ -1,0 +1,2 @@
+# FreeCodeCamp - Dynamic Web Application Projects - Build a Pinterest Clone
+**Using [express](https://expressjs.com/), [aurelia](http://aurelia.io/), [mongodb](https://github.com/mongodb/node-mongodb-native) and [ws](https://github.com/websockets/ws)**

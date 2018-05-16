@@ -1,0 +1,67 @@
+ul.nav
+  display          : flex
+  flex-direction   : row
+  justify-content  : flex-start
+  align-items      : center
+  align-content    : center
+  margin           : 0rem
+  padding          : 0rem
+  width            : 100vw
+  height           : 2rem
+  border-bottom    : 1px solid gainsboro
+  background-color : whitesmoke
+  box-sizing       : border-box
+
+  li
+    list-style-type : none
+    margin          : 0rem
+    padding         : 0rem 0.5rem
+    width           : auto
+    height          : 100%
+
+    a
+      display         : flex
+      flex-direction  : row
+      justify-content : center
+      align-items     : center
+      align-content   : center
+      width           : auto
+      height          : 100%
+      color           : slateblue
+
+  li:first-child
+    margin-left  : 1rem
+    margin-right : 0rem
+    height       : 100%
+
+    a
+      img
+        width         : 1.5rem
+        height        : 1.5rem
+        padding       : 0rem
+        margin        : 0rem
+        border-radius : 50px
+
+  li:last-child
+    margin-left  : auto
+    margin-right : 1rem
+
+  li:not(:first-child)
+    a
+      text-decoration: none
+
+  li:not(:first-child):hover, li:not(:first-child).active
+    background-color : #DFDFDF
+
+    a
+      color : darkmagenta
+
+span.nav-title
+  position    : absolute
+  display     : inline-block
+  left        : 50%
+  top         : 0rem
+  transform   : translate(-50%, 0.25rem)
+  font-weight : bold
+  color       : black
+  user-select : none
