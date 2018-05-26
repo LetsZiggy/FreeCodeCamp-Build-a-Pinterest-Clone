@@ -83,14 +83,14 @@ export class Home {
         },
         {
           id: '5',
-          image: 'http://via.placeholder.com/400x300/ff00ff/000000' ,
+          image: 'http://via.placeholder.com/1500x200/ff00ff/000000' ,
           title: 'Test Title 5',
           poster: 'testUser',
           likes: []
         },
         {
           id: '6',
-          image: 'http://via.placeholder.com/200x400/ff00ff/000000' ,
+          image: 'http://via.placeholder.com/200x1500/ff00ff/000000' ,
           title: 'Test Title 6',
           poster: 'testUser',
           likes: []

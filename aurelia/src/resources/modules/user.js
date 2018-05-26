@@ -177,10 +177,10 @@ export class User {
     let imageRatio = pin.elem.children[1].children[0].naturalWidth / pin.elem.children[1].children[0].naturalHeight;
 
     if(imageRatio <= 1.5) {
-      pin.elem.classList.add('wide-20');
+      pin.elem.classList.add('wide-10');
     }
     else {
-      pin.elem.classList.add('wide-40');
+      pin.elem.classList.add('wide-20');
     }
   }
 
