@@ -22,10 +22,7 @@ export class Home {
 
   attached() {
     this.initialise();
-    this.eaSubscription = this.ea.subscribe('ws', () => {
-      this.pins.push();
-      this.setMasonry();
-    });
+    this.eaSubscription = this.ea.subscribe('ws', () => { this.initialise(); });
 
     if(this.state.user.toAdd) {
       this.showAddPin();
@@ -47,78 +44,11 @@ export class Home {
 
   async initialise() {
     if(!this.state.pins.length) {
-      // let response = await this.api.getPins();
-      // if(response.get) {
-      //   this.state.pins = response.pins.map((v, i, a) => v);
-      // }
-
-      this.state.pins.push(
-        {
-          id: '1',
-          image: 'http://via.placeholder.com/250x350/ff00ff/000000' ,
-          title: 'Test Title 1',
-          poster: 'Test Poster 1',
-          likes: []
-        },
-        {
-          id: '2',
-          image: 'http://via.placeholder.com/350x350/ff00ff/000000' ,
-          title: 'Test Title 2',
-          poster: 'Test Poster 1',
-          likes: []
-        },
-        {
-          id: '3',
-          image: 'http://via.placeholder.com/550x250/ff00ff/000000' ,
-          title: 'Test Title 3',
-          poster: 'Test Poster 1',
-          likes: ['testUser']
-        },
-        {
-          id: '4',
-          image: 'http://via.placeholder.com/175x150/ff00ff/000000' ,
-          title: 'Test Title 4',
-          poster: 'testUser',
-          likes: []
-        },
-        {
-          id: '5',
-          image: 'http://via.placeholder.com/1500x200/ff00ff/000000' ,
-          title: 'Test Title 5',
-          poster: 'testUser',
-          likes: []
-        },
-        {
-          id: '6',
-          image: 'http://via.placeholder.com/200x1500/ff00ff/000000' ,
-          title: 'Test Title 6',
-          poster: 'testUser',
-          likes: []
-        }
-      );
+      let response = await this.api.getPins();
+      if(response.get) {
+        this.state.pins = response.pins.map((v, i, a) => v);
+      }
     }
-
-    // setTimeout(() => {
-    //   if(!this.state.pins.map((v, i, a) => v.id).includes('7')) {
-    //     this.state.pins.push({
-    //       id: '7',
-    //       image: 'http://via.placeholder.com/250x300/ff00ff/000000' ,
-    //       title: 'Test Title 7',
-    //       poster: 'Test Poster 1',
-    //       likes: ['testUser']
-    //     });
-
-    //     this.pins.push({
-    //       id: '7',
-    //       image: 'http://via.placeholder.com/250x300/ff00ff/000000' ,
-    //       title: 'Test Title 7',
-    //       poster: 'Test Poster 1',
-    //       likes: ['testUser']
-    //     });
-
-    //     this.setMasonry(this.state.pins[this.state.pins.length - 1].id);
-    //   }
-    // }, 5000);
 
     if(this.state.pins.length) {
       this.pins = this.state.pins.map((v, i, a) => v);
@@ -139,16 +69,20 @@ export class Home {
 
   async likePost(pin) {
     if(this.state.user.username) {
-      let response = await this.api.likePin({ id: pin.id }, this.state.user.username);
+      let index = pin.likes.indexOf(this.state.user.username);
 
-      if(response.like) {
-        let index = pin.likes.indexOf(this.state.user.username);
+      if(index === -1) {
+        let response = await this.api.likePin({ id: pin.id }, this.state.user.username, this.state.webSocketID);
 
-        if(index === -1) {
+        if(response.like) {
           pin.likes.push(this.state.user.username);
           pin.elem.children[0].dataset.userLike = 'true';
         }
-        else {
+      }
+      else {
+        let response = await this.api.unlikePin({ id: pin.id }, this.state.user.username, this.state.webSocketID);
+
+        if(response.unlike) {
           pin.likes.splice(index, 1);
           pin.elem.children[0].dataset.userLike = 'false';
         }
@@ -161,7 +95,7 @@ export class Home {
   }
 
   async deletePost(pin) {
-    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username);
+    let response = await this.api.deletePin({ id: pin.id }, this.state.user.username, this.state.webSocketID);
 
     if(response.delete) {
       let index = this.state.pins.map((v, i, a) => v.id).indexOf(pin.id);

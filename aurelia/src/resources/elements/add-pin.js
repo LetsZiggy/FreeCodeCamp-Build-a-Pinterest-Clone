@@ -108,12 +108,12 @@ export class AddPin {
     }
   }
 
-  addPin() {
-    let response = this.api.addPin({ image: this.image, title: this.title }, this.state.user.username);
+  async addPin() {
+    let response = await this.api.addPin({ image: this.image, title: this.title }, this.state.user.username, this.state.webSocketID);
 
     if(response.add) {
       let pin = {
-        id: response.data.id,
+        id: response.pin.id,
         image: this.image,
         title: this.title,
         poster: this.state.user.username,
@@ -122,8 +122,15 @@ export class AddPin {
 
       this.state.pins.push(pin);
       this.pins.push(pin);
-      this.setMasonry({ pinID: response.data.id });
+      this.setMasonry({ pinID: response.pin.id });
       this.closeAddPin();
+    }
+    else {
+      document.getElementById('add-pin-request-error').style.visibility = 'visible';
+
+      setTimeout(() => {
+        document.getElementById('add-pin-request-error').style.visibility = 'hidden';
+      }, 3000);
     }
   }
 }

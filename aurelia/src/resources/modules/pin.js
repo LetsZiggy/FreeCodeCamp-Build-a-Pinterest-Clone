@@ -1,15 +1,18 @@
 import {inject, bindable, bindingMode} from 'aurelia-framework';
 import {Router, Redirect} from 'aurelia-router';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {ApiInterface} from '../services/api-interface';
 import {state} from '../services/state';
 
-@inject(Router, ApiInterface)
+@inject(Router, EventAggregator, ApiInterface)
 export class Pin {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) state = state;
 
-  constructor(Router, ApiInterface) {
+  constructor(Router, EventAggregator, ApiInterface) {
     this.router = Router;
+    this.ea = EventAggregator;
     this.api = ApiInterface;
+    this.eaSubscription = null;
     this.pin = null;
     this.pinID = null;
     this.pinLikes = 0;
@@ -27,6 +30,7 @@ export class Pin {
 
   attached() {
     this.initialise();
+    this.eaSubscription = this.ea.subscribe('ws', () => { this.initialise(); });
 
     if(this.state.user.toLike) {
       if(this.state.user.toLike.poster !== this.state.user.username) {
@@ -38,11 +42,12 @@ export class Pin {
   }
 
   detached() {
+    this.eaSubscription.dispose();
     this.pinID = null;
     this.pin = null;
   }
 
-  async initialise() {
+  initialise() {
     let index = this.state.pins.map((v, i, a) => v.id).indexOf(this.pinID);
     this.pin = this.state.pins[index];
     this.pinLikes = this.pin.likes.length;
@@ -50,7 +55,7 @@ export class Pin {
 
   async likePost() {
     if(this.state.user.username) {
-      let response = await this.api.likePin({ id: this.pin.id }, this.state.user.username);
+      let response = await this.api.likePin({ id: this.pin.id }, this.state.user.username, this.state.webSocketID);
 
       if(response.like) {
         let likeElem = document.getElementById('pin-like');
@@ -75,7 +80,7 @@ export class Pin {
   }
 
   async deletePost(pin) {
-    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username);
+    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username, this.state.webSocketID);
 
     if(response.delete) {
       let index = this.state.pins.map((v, i, a) => v.id).indexOf(this.pin.id);

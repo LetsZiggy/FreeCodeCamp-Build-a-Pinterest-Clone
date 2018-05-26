@@ -4,11 +4,104 @@ const router = express.Router();
 const mongo = require('mongodb').MongoClient;
 const createID = require('./services/create-id.js');
 const handleHashing = require('./services/handle-hashing.js');
-// const {} = require('../ws.js');
+const {wsLike, wsUnlike, wsDelete, wsAdd} = require('../ws.js');
 
 const dbURL = `mongodb://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBURL}/${process.env.DBNAME}`;
 
-// Add here
+router.get(`/pins/get`, async (req, res, next) => {
+  let client = await mongo.connect(dbURL);
+  let db = await client.db(process.env.DBNAME);
+  let collectionPins = await db.collection('build-a-pinterest-clone-pins');
+  let findPins = await collectionPins.find({}, { projection: { _id: 0 } }).toArray();
+  client.close();
+
+  res.json({ get: true, pins: findPins });
+});
+
+router.post(`/pins/like`, async (req, res, next) => {
+  if(req.cookies.id) {
+    let client = await mongo.connect(dbURL);
+    let db = await client.db(process.env.DBNAME);
+    let collectionPins = await db.collection('build-a-pinterest-clone-pins');
+    let updatePin = await collectionPins.updateOne({ id: req.body.pin.id }, { $push: { likes: req.body.username } });
+    client.close();
+
+    wsLike(req.body.wsID, { id: req.body.pin.id, username: req.body.username });
+    res.json({ like: true });
+  }
+  else {
+    // res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true });
+    res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true, secure: true });
+    res.json({ like: false });
+  }
+});
+
+router.post(`/pins/unlike`, async (req, res, next) => {
+  if(req.cookies.id) {
+    let client = await mongo.connect(dbURL);
+    let db = await client.db(process.env.DBNAME);
+    let collectionPins = await db.collection('build-a-pinterest-clone-pins');
+    let updatePin = await collectionPins.updateOne({ id: req.body.pin.id }, { $pull: { likes: req.body.username } });
+    client.close();
+
+    wsUnlike(req.body.wsID, { id: req.body.pin.id, username: req.body.username });
+    res.json({ unlike: true });
+  }
+  else {
+    // res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true });
+    res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true, secure: true });
+    res.json({ unlike: false });
+  }
+});
+
+router.post(`/pins/delete`, async (req, res, next) => {
+  if(req.cookies.id) {
+    let client = await mongo.connect(dbURL);
+    let db = await client.db(process.env.DBNAME);
+    let collectionIDs = await db.collection('build-a-pinterest-clone-ids');
+    let removeIDs = await collectionIDs.updateOne({ type: 'pins' }, { $pull: { list: req.body.pin.id } });
+    let collectionPins = await db.collection('build-a-pinterest-clone-pins');
+    let updatePin = await collectionPins.deleteOne({ id: req.body.pin.id });
+    client.close();
+
+    wsDelete(req.body.wsID, { id: req.body.pin.id });
+    res.json({ delete: true });
+  }
+  else {
+    // res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true });
+    res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true, secure: true });
+    res.json({ delete: false });
+  }
+});
+
+router.post(`/pins/add`, async (req, res, next) => {
+  if(req.cookies.id) {
+    let data = {};
+    data.image = req.body.pin.image;
+    data.title = req.body.pin.title;
+    data.poster = req.body.username;
+    data.likes = [];
+
+    let client = await mongo.connect(dbURL);
+    let db = await client.db(process.env.DBNAME);
+    let collectionIDs = await db.collection('build-a-pinterest-clone-ids');
+    let findID = await collectionIDs.findOne({ type: 'pins' }, { projection: { _id: 0, type: 0 } });
+    let id = createID(findID.list);
+    data.id = id;
+    let insertID = await collectionIDs.findOneAndUpdate({ type: 'pins' }, { $push: { list: id } });
+    let collectionPins = await db.collection('build-a-pinterest-clone-pins');
+    let insertPin = await collectionPins.insertOne(data);
+    client.close();
+
+    wsAdd(req.body.wsID, data);
+    res.json({ add: true, pin: { id: id } });
+  }
+  else {
+    // res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true });
+    res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true, secure: true });
+    res.json({ add: false });
+  }
+});
 
 router.post('/user/checkname', async (req, res, next) => {
   let client = await mongo.connect(dbURL);

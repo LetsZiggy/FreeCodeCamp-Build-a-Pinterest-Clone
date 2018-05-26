@@ -14,80 +14,80 @@ export class App {
   }
 
   bind() {
-    // let data = JSON.parse(localStorage.getItem('freecodecamp-build-a-pinterest-clone')) || {};
+    let data = JSON.parse(localStorage.getItem('freecodecamp-build-a-pinterest-clone')) || {};
 
-    // if(data.username && data.userexpire && (parseInt(data.userexpire) - Date.now()) > 5000) {
-    //   this.state.user.username = data.username || null;
-    //   this.state.user.expire = parseInt(data.userexpire) || null;
-    // }
-    // else {
-    //   data.username = this.state.user.username;
-    //   data.userexpire = this.state.user.expire;
-    //   localStorage.setItem('freecodecamp-build-a-pinterest-clone', JSON.stringify(data));
-    // }
+    if(data.username && data.userexpire && (parseInt(data.userexpire) - Date.now()) > 5000) {
+      this.state.user.username = data.username || null;
+      this.state.user.expire = parseInt(data.userexpire) || null;
+    }
+    else {
+      data.username = this.state.user.username;
+      data.userexpire = this.state.user.expire;
+      localStorage.setItem('freecodecamp-build-a-pinterest-clone', JSON.stringify(data));
+    }
 
-    // if(!this.state.webSocket) {
-    //   this.setWebsocket();
-    // }
+    if(!this.state.webSocket) {
+      this.setWebsocket();
+    }
   }
 
   async attached() {
-    // if(this.state.user.username && this.state.user.expire && (this.state.user.expire - Date.now()) > 5000) {
-    //   this.state.user.interval = setTimeout(async () => {
-    //     let logout = await this.api.logoutUser();
+    if(this.state.user.username && this.state.user.expire && (this.state.user.expire - Date.now()) > 5000) {
+      this.state.user.interval = setTimeout(async () => {
+        let logout = await this.api.logoutUser();
         
-    //     if(this.state.user.interval) {
-    //       clearInterval(this.state.user.interval);
-    //       this.state.user.interval = null;
-    //     }
+        if(this.state.user.interval) {
+          clearInterval(this.state.user.interval);
+          this.state.user.interval = null;
+        }
 
-    //     if(this.state.webSocketID) {
-    //       this.state.webSocket.send(JSON.stringify({ type: 'logout' }));
-    //     }
+        if(this.state.webSocketID) {
+          this.state.webSocket.send(JSON.stringify({ type: 'logout' }));
+        }
 
-    //     this.state.user.username = null;
-    //     this.state.user.expire = null;
-    //     console.log('logout');
-    //   }, (this.state.user.expire - Date.now()));
-    // }
-    // else {
-    //   let logout = await this.api.logoutUser();
+        this.state.user.username = null;
+        this.state.user.expire = null;
+        console.log('logout');
+      }, (this.state.user.expire - Date.now()));
+    }
+    else {
+      let logout = await this.api.logoutUser();
 
-    //   if(this.state.user.interval) {
-    //     clearInterval(this.state.user.interval);
-    //     this.state.user.interval = null;
-    //   }
+      if(this.state.user.interval) {
+        clearInterval(this.state.user.interval);
+        this.state.user.interval = null;
+      }
 
-    //   this.state.user.username = null;
-    //   this.state.user.expire = null;
-    // }
+      this.state.user.username = null;
+      this.state.user.expire = null;
+    }
 
-    // window.onbeforeunload = (event) => {
-    //   if(this.state.user.interval) {
-    //     clearInterval(this.state.user.interval);
-    //     this.state.user.interval = null;
-    //   }
+    window.onbeforeunload = (event) => {
+      if(this.state.user.interval) {
+        clearInterval(this.state.user.interval);
+        this.state.user.interval = null;
+      }
 
-    //   if(this.state.webSocket) {
-    //     this.state.webSocket.close();
-    //     this.state.webSocketID = null;
-    //     this.state.webSocket = null;
-    //     console.log('close');
-    //   }
+      if(this.state.webSocket) {
+        this.state.webSocket.close();
+        this.state.webSocketID = null;
+        this.state.webSocket = null;
+        console.log('close');
+      }
 
-    //   if(this.state.user.username) {
-    //     let store = JSON.parse(localStorage.getItem('freecodecamp-build-a-pinterest-clone')) || {};
-    //     let data = { username: this.state.user.username, userexpire: this.state.user.expire };
-    //     localStorage.setItem('freecodecamp-build-a-pinterest-clone', JSON.stringify(data));
-    //   }
+      if(this.state.user.username) {
+        let store = JSON.parse(localStorage.getItem('freecodecamp-build-a-pinterest-clone')) || {};
+        let data = { username: this.state.user.username, userexpire: this.state.user.expire };
+        localStorage.setItem('freecodecamp-build-a-pinterest-clone', JSON.stringify(data));
+      }
 
-    //   return;
-    // };
+      return;
+    };
   }
 
   setWebsocket() {
-    this.state.webSocket = new WebSocket(`ws://localhost:3000`);
-    // this.state.webSocket = new WebSocket(`wss://letsziggy-freecodecamp-dynamic-web-application-05.glitch.me`);
+    // this.state.webSocket = new WebSocket(`ws://localhost:3000`);
+    this.state.webSocket = new WebSocket(`wss://letsziggy-freecodecamp-dynamic-web-application-05.glitch.me`);
 
     this.state.webSocket.onopen = (event) => {
       console.log('open');

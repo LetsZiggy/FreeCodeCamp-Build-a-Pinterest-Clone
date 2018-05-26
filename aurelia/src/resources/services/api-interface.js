@@ -5,8 +5,8 @@ import {HttpClient} from 'aurelia-fetch-client';
 export class ApiInterface {
   constructor(HttpClient) {
     HttpClient.configure(config => {
-      config.withBaseUrl('http://localhost:3000/api')
-      // config.withBaseUrl('https://letsziggy-freecodecamp-dynamic-web-application-05.glitch.me/api')
+      // config.withBaseUrl('http://localhost:3000/api')
+      config.withBaseUrl('https://letsziggy-freecodecamp-dynamic-web-application-05.glitch.me/api')
             .withInterceptor({
               request(request) {
                 return request;
@@ -37,45 +37,59 @@ export class ApiInterface {
                  }
                })
                .then(response => response.json())
-               .then(data => data.taken)
+               .then(data => data)
     );
   }
 
-  likePin(pin, username) {
-    // return(
-    //   this.http.fetch(`/pins/like`, {
-    //              method: 'POST',
-    //              credentials: 'same-origin',
-    //              headers: {
-    //                'Accept': 'application/json',
-    //                'Content-Type': 'application/json'
-    //              },
-    //              body: JSON.stringify({ pin: pin, username: username })
-    //            })
-    //            .then(response => response.json())
-    //            .then(data => data.taken)
-    // );
-    return({ like: true });
+  likePin(pin, username, wsID) {
+    return(
+      this.http.fetch(`/pins/like`, {
+                 method: 'POST',
+                 credentials: 'same-origin',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({ pin: pin, username: username, wsID: wsID })
+               })
+               .then(response => response.json())
+               .then(data => data)
+    );
   }
 
-  deletePin(pin, username) {
-    // return(
-    //   this.http.fetch(`/pins/delete`, {
-    //              method: 'POST',
-    //              credentials: 'same-origin',
-    //              headers: {
-    //                'Accept': 'application/json',
-    //                'Content-Type': 'application/json'
-    //              },
-    //              body: JSON.stringify({ pin: pin, username: username })
-    //            })
-    //            .then(response => response.json())
-    //            .then(data => data.taken)
-    // );
-    return({ delete: true });
+  unlikePin(pin, username, wsID) {
+    return(
+      this.http.fetch(`/pins/unlike`, {
+                 method: 'POST',
+                 credentials: 'same-origin',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({ pin: pin, username: username, wsID: wsID })
+               })
+               .then(response => response.json())
+               .then(data => data)
+    );
   }
 
-  addPin(pin, username) {
+  deletePin(pin, username, wsID) {
+    return(
+      this.http.fetch(`/pins/delete`, {
+                 method: 'POST',
+                 credentials: 'same-origin',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({ pin: pin, username: username, wsID: wsID })
+               })
+               .then(response => response.json())
+               .then(data => data)
+    );
+  }
+
+  addPin(pin, username, wsID) {
     return(
       this.http.fetch(`/pins/add`, {
                  method: 'POST',
@@ -84,10 +98,10 @@ export class ApiInterface {
                    'Accept': 'application/json',
                    'Content-Type': 'application/json'
                  },
-                 body: JSON.stringify({ pin: pin, username: username })
+                 body: JSON.stringify({ pin: pin, username: username, wsID: wsID })
                })
                .then(response => response.json())
-               .then(data => data.taken)
+               .then(data => data)
     );
   }
 
@@ -124,37 +138,33 @@ export class ApiInterface {
   }
 
   getUser(user) {
-    // return(
-    //   this.http.fetch(`/user/login`, {
-    //              method: 'POST',
-    //              credentials: 'same-origin',
-    //              headers: {
-    //                'Accept': 'application/json',
-    //                'Content-Type': 'application/json'
-    //              },
-    //              body: JSON.stringify(user)
-    //            })
-    //            .then(response => response.json())
-    //            .then(data => data)
-    // );
-    let date = new Date();
-    date.setDate(date.getDate() + 1);
-    return({ get: true, expire: date.getTime() });
+    return(
+      this.http.fetch(`/user/login`, {
+                 method: 'POST',
+                 credentials: 'same-origin',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify(user)
+               })
+               .then(response => response.json())
+               .then(data => data)
+    );
   }
 
   logoutUser() {
-    // return(
-    //   this.http.fetch(`/user/logout`, {
-    //              method: 'POST',
-    //              credentials: 'same-origin',
-    //              headers: {
-    //                'Accept': 'application/json'
-    //              }
-    //            })
-    //            .then(response => response.json())
-    //            .then(data => data)
-    // );
-    return({ logout: true });
+    return(
+      this.http.fetch(`/user/logout`, {
+                 method: 'POST',
+                 credentials: 'same-origin',
+                 headers: {
+                   'Accept': 'application/json'
+                 }
+               })
+               .then(response => response.json())
+               .then(data => data)
+    );
   }
 
   editUser(user) {

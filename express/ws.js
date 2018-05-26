@@ -37,11 +37,41 @@ function webSocketInitialise(server) {
   }, 30000);
 }
 
-function funcName(id, data) {
+function wsLike(id, data) {
   wss.clients.forEach((client) => {
     if(client.id !== id) {
       client.send(JSON.stringify({
-        type: '',
+        type: 'like',
+        data: data
+      }));
+    }
+  });
+}
+function wsUnlike(id, data) {
+  wss.clients.forEach((client) => {
+    if(client.id !== id) {
+      client.send(JSON.stringify({
+        type: 'unlike',
+        data: data
+      }));
+    }
+  });
+}
+function wsDelete(id, data) {
+  wss.clients.forEach((client) => {
+    if(client.id !== id) {
+      client.send(JSON.stringify({
+        type: 'delete',
+        data: data
+      }));
+    }
+  });
+}
+function wsAdd(id, data) {
+  wss.clients.forEach((client) => {
+    if(client.id !== id) {
+      client.send(JSON.stringify({
+        type: 'add',
         data: data
       }));
     }
@@ -50,5 +80,8 @@ function funcName(id, data) {
 
 module.exports = {
   webSocketInitialise: webSocketInitialise,
-  funcName: funcName
+  wsLike: wsLike,
+  wsUnlike: wsUnlike,
+  wsDelete: wsDelete,
+  wsAdd: wsAdd
 }

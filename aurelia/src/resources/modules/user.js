@@ -14,6 +14,7 @@ export class User {
     this.router = Router;
     this.ea = EventAggregator;
     this.api = ApiInterface;
+    this.eaSubscription = null;
     this.imagesLoaded = null;
     this.Masonry = null;
     this.poster = null;
@@ -22,7 +23,7 @@ export class User {
 
   canActivate(params, routeConfig, navigationInstruction) {
     if(this.state.user.username === null && params.username === undefined) {
-        return(new Redirect('home'));
+      return(new Redirect('home'));
     }
   }
 
@@ -51,79 +52,14 @@ export class User {
   }
 
   async initialise() {
-
     if(!this.state.pins.length) {
-      // let response = await this.api.getPins();
-      // if(response.get) {
-      //   this.state.pins = response.pins.map((v, i, a) => v);
-      // }
-
-      this.state.pins.push(
-        {
-          id: '1',
-          image: 'http://via.placeholder.com/250x350/ff00ff/000000' ,
-          title: 'Test Title 1',
-          poster: 'Test Poster 1',
-          likes: []
-        },
-        {
-          id: '2',
-          image: 'http://via.placeholder.com/350x350/ff00ff/000000' ,
-          title: 'Test Title 2',
-          poster: 'Test Poster 1',
-          likes: []
-        },
-        {
-          id: '3',
-          image: 'http://via.placeholder.com/350x250/ff00ff/000000' ,
-          title: 'Test Title 3',
-          poster: 'Test Poster 1',
-          likes: ['testUser']
-        },
-        {
-          id: '4',
-          image: 'http://via.placeholder.com/175x150/ff00ff/000000' ,
-          title: 'Test Title 4',
-          poster: 'testUser',
-          likes: []
-        },
-        {
-          id: '5',
-          image: 'http://via.placeholder.com/400x300/ff00ff/000000' ,
-          title: 'Test Title 5',
-          poster: 'testUser',
-          likes: []
-        },
-        {
-          id: '6',
-          image: 'http://via.placeholder.com/200x400/ff00ff/000000' ,
-          title: 'Test Title 6',
-          poster: 'testUser',
-          likes: []
-        }
-      );
+      let response = await this.api.getPins();
+      if(response.get) {
+        this.state.pins = response.pins.map((v, i, a) => v);
+      }
     }
 
     if(this.state.pins.length) {
-      // if(this.poster) {
-      //   this.pins = this.state.pins.reduce((acc, v, i, a) => {
-      //     if(v.poster === this.poster) {
-      //       acc.push(v);
-      //     }
-
-      //     return(acc);
-      //   }, []);
-      // }
-      // else {
-      //   this.pins = this.state.pins.reduce((acc, v, i, a) => {
-      //     if(v.poster === this.state.user.username) {
-      //       acc.push(v);
-      //     }
-
-      //     return(acc);
-      //   }, []);
-      // }
-
       this.pins = this.state.pins.reduce((acc, v, i, a) => {
         if(this.poster && v.poster === this.poster) {
           acc.push(v);
@@ -139,9 +75,20 @@ export class User {
     }
   }
 
+  showAddPin() {
+    if(this.state.user.username) {
+      document.getElementById('add-pin-content').style.visibility = 'visible';
+      document.getElementById('add-pin-content').style.pointerEvents = 'auto';
+    }
+    else {
+      this.state.user.toAdd = true;
+      this.router.navigateToRoute('login');
+    }
+  }
+
   async likePost(pin) {
     if(this.state.user.username) {
-      let response = await this.api.likePin({ id: pin.id }, this.state.user.username);
+      let response = await this.api.likePin({ id: pin.id }, this.state.user.username, this.state.webSocketID);
 
       if(response.like) {
         let index = pin.likes.indexOf(this.state.user.username);
@@ -163,7 +110,7 @@ export class User {
   }
 
   async deletePost(pin) {
-    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username);
+    let response = await this.api.deletePin({ id: pin.id }, this.state.user.username, this.state.webSocketID);
 
     if(response.delete) {
       let index = this.state.pins.map((v, i, a) => v.id).indexOf(pin.id);

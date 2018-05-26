@@ -16,4 +16,8 @@ template
           input#add-pin-title-input(type="text" value.bind="title" placeholder="eg: This is a placeholder image" keydown.delegate="checkInput($event)")
         #add-pin-buttons
           input#add-pin-submit(type="submit" value="Add Pin" disabled.bind="error || !image.length || !title.length")
-          //- input#add-pin-reset(type="reset" value="Reset")
+
+    #add-pin-request-error
+      | Sorry. There is an error processing your request.
+      br
+      | Please try again later.
