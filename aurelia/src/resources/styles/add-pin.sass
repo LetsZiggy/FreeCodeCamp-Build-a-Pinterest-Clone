@@ -1,0 +1,177 @@
+#add-pin-content
+  position        : absolute
+  left            : 0rem
+  top             : 0rem
+  z-index         : 50
+  display         : flex
+  flex-direction  : column
+  justify-content : center
+  align-items     : center
+  align-content   : center
+  width           : 100%
+  height          : 100%
+  box-sizing      : border-box
+  visibility      : hidden
+  pointer-events  : none
+
+  #add-pin-background:hover
+    background-color : rgba(0, 0, 0, 0.8)
+
+  #add-pin-background
+    position         : absolute
+    left             : 0rem
+    top              : 0rem
+    z-index          : -5
+    width            : 100%
+    height           : 100%
+    background-color : rgba(0, 0, 0, 0.75)
+    cursor           : pointer
+
+  #add-pin-close-button:hover
+    background-color : darkgrey
+
+  #add-pin-close-button
+    position         : absolute
+    right            : 1.5rem
+    top              : 3.5rem
+    z-index          : 5
+    display          : flex
+    flex-direction   : row
+    justify-content  : center
+    align-items      : center
+    align-content    : center
+    width            : 2.5rem
+    height           : 2.5rem
+    background-color : white
+    cursor           : pointer
+
+    img
+      width     : 2rem
+      height    : 2rem
+
+  #add-pin-container
+    position         : relative
+    width            : 70vw
+    height           : 70vh
+    box-sizing       : border-box
+    border           : 1px solid rgba(0, 0, 0, 0.25)
+    border-top       : none
+    overflow         : hidden
+    box-shadow       : 0px 6px 12px -3px rgba(0, 0, 0, 0.5)
+    background-color : white
+    padding          : 0rem
+    z-index          : 10
+
+    #add-pin-image-display
+      display             : flex
+      flex-direction      : column
+      justify-content     : center
+      align-items         : center
+      align-content       : center
+      width               : 100%
+      height              : 50vh
+      box-sizing          : border-box
+      border-bottom       : 1px solid rgba(0, 0, 0, 0.25)
+      background-color    : lightgrey
+      background-image    : url("https://material.io/tools/icons/static/icons/baseline-image-24px.svg")
+      background-size     : 20% 20%
+      background-repeat   : no-repeat
+      background-position : center center
+
+      img
+        width            : 0rem
+        height           : 0rem
+        visibility       : hidden
+        background-color : rgba(0, 0, 0, 0)
+
+      img.wide
+        width            : 100%
+        height           : auto
+        visibility       : visible
+        background-color : lightgrey
+
+      img.tall
+        width            : auto
+        height           : 100%
+        visibility       : visible
+        background-color : lightgrey
+
+    #add-pin-form
+      display         : flex
+      flex-direction  : column
+      justify-content : flex-start
+      align-items     : flex-start
+      align-content   : flex-start
+      width           : 100%
+      height          : 20vh
+      box-sizing      : border-box
+      padding         : 0rem
+      margin          : 0rem
+
+      label
+        display         : flex
+        flex-direction  : column
+        justify-content : flex-start
+        align-items     : flex-start
+        align-content   : flex-start
+        width           : 100%
+        height          : auto
+        box-sizing      : border-box
+        padding         : 0rem
+        margin          : 0.15rem 0rem
+
+        span
+          font-size   : 0.85rem
+          line-height : 0.9rem
+          padding     : 0rem
+          margin      : 0rem 0rem 0.1rem 0.25rem
+
+        #add-pin-image-input, #add-pin-title-input
+          width      : calc(100% - 0.5rem)
+          height     : 1.75rem
+          box-sizing : border-box
+          border     : 1px solid lightgrey
+          padding    : 0rem 0.25rem
+          margin     : 0rem 0.25rem
+          font-size  : 0.85rem
+
+        #add-pin-image-input.error, #add-pin-title-input.error
+          border : 1px solid firebrick
+
+      #add-pin-buttons
+        display         : flex
+        flex-direction  : row
+        justify-content : flex-end
+        align-items     : flex-start
+        align-content   : flex-start
+        width           : 100%
+        height          : auto
+        box-sizing      : border-box
+        padding         : 0.15rem 0rem
+        margin          : 0rem
+
+        #add-pin-submit:hover
+          background-color : lightgrey
+
+        #add-pin-submit:disabled
+          border           : 1px solid firebrick
+          background-color : firebrick
+          color            : whitesmoke
+          cursor           : not-allowed
+
+        #add-pin-submit
+          border           : 1px solid grey
+          padding          : 0.25rem
+          margin           : 0rem 0.5rem
+          background-color : whitesmoke
+          cursor           : pointer
+
+        // #add-pin-submit:hover, #add-pin-reset:hover
+        //   background-color : lightgrey
+
+        // #add-pin-submit, #add-pin-reset
+        //   border           : 1px solid grey
+        //   padding          : 0.25rem
+        //   margin           : 0rem 0.5rem
+        //   background-color : whitesmoke
+        //   cursor           : pointer

@@ -1,2 +1,18 @@
 template
   #content.home-content
+    button#add-pin-button(click.delegate="showAddPin()")
+      img(src="https://material.io/tools/icons/static/icons/baseline-add-24px.svg")
+
+    #pins
+      .pin(repeat.for="pin of pins" ref="pin.elem" id="${pin.id}" style="visibility: hidden;")
+        img.pin-like(if.bind="pin.poster !== state.user.username" src="https://material.io/tools/icons/static/icons/baseline-favorite_border-24px.svg" click.delegate="likePost(pin)" data-user-like.bind="pin.likes.includes(state.user.username)")
+        img.pin-delete(if.bind="pin.poster === state.user.username" src="https://material.io/tools/icons/static/icons/baseline-delete-24px.svg" click.delegate="deletePost(pin)")
+        a.pin-image-link(route-href="route: pin; params.bind: { id: pin.id }")
+          img.pin-image(src="${pin.image}" load.trigger="imageLoad(pin)" error.trigger="imageError(pin)")
+        .pin-detail
+          a.pin-detail-title(route-href="route: pin; params.bind: { id: pin.id }") ${pin.title}
+          .pin-detail-username
+            span By:
+            a(route-href="route: user; params.bind: { username: pin.poster === state.user.username ? undefined : pin.poster }" data-is-owner="${pin.poster === state.user.username ? 'true' : 'false'}") ${pin.poster}
+
+    add-pin(set-masonry.call="setMasonry(pinID)" state.bind="state" api.bind="api" pins.bind="pins")

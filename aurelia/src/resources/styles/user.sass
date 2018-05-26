@@ -7,3 +7,146 @@
   align-content   : center
   padding         : 0rem
   margin          : 0rem
+
+  #pins
+    position   : relative
+    width      : 100%
+    height     : 100%
+    box-sizing : border-box
+    padding    : 0rem
+    margin     : 0rem
+    overflow   : auto
+
+    .pin.wide-40
+      width : calc(40% - 1rem)
+
+    .pin.wide-20
+      width : calc(20% - 1rem)
+
+    .pin:hover
+      box-shadow       : 0px 3px 10px 0px rgba(0, 0, 0, 0.35)
+      background-color : rgb(240, 240, 240)
+
+    .pin
+      position         : relative
+      display          : inline-flex
+      flex-direction   : column
+      flex-wrap        : nowrap
+      justify-content  : flex-start
+      align-items      : center
+      align-content    : flex-start
+      height           : auto
+      box-sizing       : border-box
+      box-shadow       : 0px 3px 10px 0px rgba(0, 0, 0, 0.25)
+      padding          : 0rem
+      margin           : 0.5rem
+      background-color : whitesmoke
+      user-select      : none
+
+      .pin-like[data-user-like="false"]:hover
+        background-color : indianred
+
+      .pin-like[data-user-like="false"]
+        background-color : whitesmoke
+
+      .pin-like[data-user-like="true"]:hover
+        background-color : lightgrey
+
+      .pin-like[data-user-like="true"]
+        background-color : lightcoral
+
+      .pin-like
+        position      : absolute
+        right         : 0.5rem
+        top           : 0.5rem
+        z-index       : 5
+        width         : 2rem
+        height        : 2rem
+        box-sizing    : border-box
+        border        : 2px solid rgba(255, 255, 255, 1)
+        border-radius : 50%
+        padding       : 0.25rem
+        margin        : 0rem
+        cursor        : pointer
+        user-select   : none
+
+      .pin-delete:hover
+        background-color : indianred
+
+      .pin-delete
+        position         : absolute
+        right            : 0.5rem
+        top              : 0.5rem
+        z-index          : 5
+        width            : 2rem
+        height           : 2rem
+        box-sizing       : border-box
+        border           : 2px solid rgba(255, 255, 255, 1)
+        border-radius    : 50%
+        background-color : whitesmoke
+        padding          : 0.25rem
+        margin           : 0rem
+        cursor           : pointer
+        user-select      : none
+      
+      .pin-image-link
+        position   : relative
+        width      : auto
+        height     : auto
+        box-sizing : border-box
+        padding    : 0rem
+        margin     : 0rem
+
+        .pin-image
+          width            : 100%
+          height           : auto
+          box-sizing       : border-box
+          border           : 0px solid rgba(0, 0, 0, 0)
+          padding          : 0rem
+          margin           : 0rem
+          background-color : rgba(0, 0, 0, 0)
+          cursor           : pointer
+          user-select      : none
+
+      .pin-detail
+        display         : flex
+        flex-direction  : column
+        flex-wrap       : nowrap
+        justify-content : center
+        align-items     : flex-start
+        align-content   : center
+        width           : 100%
+        height          : auto
+        box-sizing      : border-box
+        padding         : 0rem
+        margin          : 0rem
+
+        .pin-detail-title:hover
+          color           : black
+          text-decoration : underline
+
+        .pin-detail-title
+          font-size   : 0.85rem
+          line-height : 1rem
+          color       : grey
+          box-sizing  : border-box
+          padding     : 0rem 0rem 0rem 0.1rem
+          margin      : 0.1rem 0rem
+          cursor      : pointer
+          user-select : none
+
+        .pin-detail-username:hover
+          a[data-is-owner="true"]
+            color : indigo
+
+          a[data-is-owner="false"]
+            color : black
+
+        .pin-detail-username
+          font-size   : 0.65rem
+          line-height : 0.8rem
+          color       : grey
+          box-sizing  : border-box
+          padding     : 0rem 0rem 0rem 0.1rem
+          margin      : 0.1rem 0rem 0.2rem 0rem
+          user-select : none

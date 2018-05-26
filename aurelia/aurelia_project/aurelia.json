@@ -87,7 +87,17 @@
             "main": "aurelia-validation"
           },
           "whatwg-fetch",
-          "aurelia-fetch-client"
+          "aurelia-fetch-client",
+          {
+            "name": "imagesLoaded",
+            "path": "../node_modules/imagesloaded",
+            "main": "imagesloaded.pkgd.min"
+          },
+          {
+            "name": "masonry",
+            "path": "../node_modules/masonry-layout/dist",
+            "main": "masonry.pkgd.min"
+          }
         ]
       }
     ],

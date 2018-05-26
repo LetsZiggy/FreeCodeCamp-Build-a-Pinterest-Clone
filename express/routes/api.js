@@ -14,7 +14,7 @@ router.post('/user/checkname', async (req, res, next) => {
   let client = await mongo.connect(dbURL);
   let db = await client.db(process.env.DBNAME);
   let collectionIDs = await db.collection('build-a-pinterest-clone-ids');
-  let findID = await collectionIDs.findOne({ type: 'users' }, { _id: 0, type: 0 });
+  let findID = await collectionIDs.findOne({ type: 'users' }, { projection: { _id: 0, type: 0 } });
   client.close();
 
   let takenUsernames = Object.entries(findID).map((v, i, a) => v[1]);
@@ -30,14 +30,13 @@ router.post('/user/create', async (req, res, next) => {
   if(!req.cookies.id) {
     let data = {};
     data.username = req.body.username;
-    data.location = '';
     data.email = handleHashing(req.body.email);
     data.password = handleHashing(req.body.password);
 
     let client = await mongo.connect(dbURL);
     let db = await client.db(process.env.DBNAME);
     let collectionIDs = await db.collection('build-a-pinterest-clone-ids');
-    let findID = await collectionIDs.findOne({ type: 'users' }, { _id: 0, type: 0 });
+    let findID = await collectionIDs.findOne({ type: 'users' }, { projection: { _id: 0, type: 0 } });
     let id = createID(findID.list);
     data.id = id;
     let query = `list.${id}`;
@@ -51,7 +50,7 @@ router.post('/user/create', async (req, res, next) => {
     // res.cookie('id', id, { expires: date, path: '/', httpOnly: true });
     res.cookie('id', id, { expires: date, path: '/', httpOnly: true, secure: true });
 
-    res.json({ create: true, expire: date.getTime(), location: '' });
+    res.json({ create: true, expire: date.getTime() });
   }
   else {
     // res.cookie('id', '', { expires: new Date(), path: '/', httpOnly: true });
@@ -82,7 +81,7 @@ router.post('/user/login', async (req, res, next) => {
         date.setDate(date.getDate() + 1);
         // res.cookie('id', findUser.id, { expires: date, path: '/', httpOnly: true });
         res.cookie('id', findUser.id, { expires: date, path: '/', httpOnly: true, secure: true });
-        res.json({ get: true, expire: date.getTime(), location: findUser.location });
+        res.json({ get: true, expire: date.getTime() });
       }
     }
   }
@@ -120,7 +119,7 @@ router.post('/user/edit', async (req, res, next) => {
       date.setDate(date.getDate() + 1);
       // res.cookie('id', findUser.id, { expires: date, path: '/', httpOnly: true });
       res.cookie('id', findUser.id, { expires: date, path: '/', httpOnly: true, secure: true });
-      res.json({ update: true, expire: date.getTime(), location: findUser.location });
+      res.json({ update: true, expire: date.getTime() });
     }
   }
   else {

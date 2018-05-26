@@ -1,2 +1,11 @@
 template
   #content.user-content
+    #pins
+      .pin(repeat.for="pin of pins" ref="pin.elem" id="${pin.id}" style="visibility: hidden;")
+        img.pin-like(if.bind="pin.poster !== state.user.username" src="https://material.io/tools/icons/static/icons/baseline-favorite_border-24px.svg" click.delegate="likePost(pin)" data-user-like.bind="pin.likes.includes(state.user.username)")
+        img.pin-delete(if.bind="pin.poster === state.user.username" src="https://material.io/tools/icons/static/icons/baseline-delete-24px.svg" click.delegate="deletePost(pin)")
+        a.pin-image-link(route-href="route: pin; params.bind: { id: pin.id }")
+          img.pin-image(src="${pin.image}" load.trigger="imageLoad(pin)" error.trigger="imageError(pin)")
+        .pin-detail
+          a.pin-detail-title(route-href="route: pin; params.bind: { id: pin.id }") ${pin.title}
+          .pin-detail-username By: ${pin.poster}

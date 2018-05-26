@@ -1,0 +1,136 @@
+.pin-content
+  position        : relative
+  flex-direction  : column
+  flex-wrap       : nowrap
+  justify-content : flex-start
+  align-items     : flex-start
+  align-content   : center
+  padding         : 0rem
+  margin          : 0rem
+
+  #pin-image-container
+    position         : relative
+    display          : flex
+    flex-direction   : row
+    flex-wrap        : nowrap
+    justify-content  : center
+    align-items      : center
+    align-content    : center
+    width            : 100%
+    height           : 75%
+    box-sizing       : border-box
+    padding          : 0rem
+    margin           : 0rem
+    background-color : whitesmoke
+
+    #pin-image
+      width            : auto
+      height           : auto
+      max-width        : 100%
+      max-height       : 100%
+      box-sizing       : border-box
+      border           : 0px solid rgba(0, 0, 0, 0)
+      padding          : 0rem
+      margin           : 0rem
+      background-color : rgba(0, 0, 0, 0)
+      cursor           : pointer
+      user-select      : none
+
+  #pin-details
+    position        : relative
+    display         : flex
+    flex-direction  : column
+    flex-wrap       : nowrap
+    justify-content : flex-start
+    align-items     : flex-start
+    align-content   : center
+    width           : 100%
+    height          : 25%
+    box-sizing      : border-box
+    padding         : 1rem 1.5rem 0rem 1.5rem
+    margin          : 0rem
+
+    #pin-title
+      font-size   : 1.25rem
+      line-height : 1.5rem
+      color       : black
+      box-sizing  : border-box
+      padding     : 0rem
+      margin      : 0rem
+      font-weight : bolder
+      cursor      : pointer
+      user-select : none
+
+    #pin-poster:hover
+      #pin-poster-username[data-is-owner="true"]
+        color : indigo
+
+      #pin-poster-username[data-is-owner="false"]
+        color : black
+
+    #pin-poster
+      font-size   : 1rem
+      line-height : 1.25rem
+      color       : grey
+      box-sizing  : border-box
+      padding     : 0rem
+      margin      : 0rem
+      user-select : none
+
+      #pin-poster-by
+        margin : 0rem 0.5rem 0rem 0rem
+
+      #pin-poster-username[data-is-owner="true"]
+        color : darkslateblue
+
+      #pin-poster-username[data-is-owner="false"]
+        color : grey
+
+      #pin-poster-username
+        cursor          : pointer
+        text-decoration : underline
+
+    #pin-like[data-user-like="false"]:hover
+      background-color : indianred
+      border           : 1px solid indianred
+      box-shadow       : 0rem 8px 10px -3px rgba(0, 0, 0, 0.5)
+
+    #pin-like[data-user-like="false"]
+      background-color : whitesmoke
+      border           : 1px solid lightgrey
+
+    #pin-like[data-user-like="true"]:hover
+      background-color : lightgrey
+      border           : 1px solid lightgrey
+      box-shadow       : 0rem 8px 10px -3px rgba(0, 0, 0, 0.5)
+
+    #pin-like[data-user-like="true"]
+      background-color : lightcoral
+      border           : 1px solid lightcoral
+
+    #pin-like
+      position         : absolute
+      bottom           : 1rem
+      right            : 1.5rem
+      width            : 3.5rem
+      height           : 3.5rem
+      box-sizing       : border-box
+      border-radius    : 50%
+      box-shadow       : 0rem 5px 10px -5px rgba(0, 0, 0, 0.75)
+      background-color : white
+      cursor           : pointer
+
+      #pin-like-image
+        position  : absolute
+        top       : 50%
+        left      : 50%
+        transform : translate(-50%, -45%)
+        width     : 3rem
+        height    : 3rem
+
+      #pin-like-count
+        position  : absolute
+        top       : 50%
+        left      : 50%
+        transform : translate(-50%, -50%)
+        color     : black

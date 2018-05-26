@@ -13,9 +13,13 @@ export class Login {
     this.checkNameValue = null;
     this.checkNameTaken = false;
     this.radio = null;
+    this.hasLogin = false;
+    this.prevLocation = null;
   }
 
   async canActivate(params, routeConfig, navigationInstruction) {
+    this.prevLocation = this.router.history.previousLocation;
+
     if(this.state.user.username) {
       let data = JSON.parse(localStorage.getItem('freecodecamp-build-a-pinterest-clone')) || {};
       let logout = await this.api.logoutUser();
@@ -36,7 +40,7 @@ export class Login {
       data.userexpire = this.state.user.expire;
       localStorage.setItem('freecodecamp-build-a-pinterest-clone', JSON.stringify(data));
 
-      return(new Redirect('home')); 
+      return(new Redirect('home'));
     }
   }
 
@@ -49,11 +53,17 @@ export class Login {
   }
 
   detached() {
+    if(!this.hasLogin) {
+      this.state.user.toLike = null;
+      this.state.user.toAdd = false;
+    }
+
     if(this.state.login.timer) {
       clearInterval(this.state.login.interval);
     }
 
     this.checkNameValue = null;
+    this.prevLocation = null;
   }
 
   async checkInput(event, form) {
@@ -160,7 +170,17 @@ export class Login {
         this.state.webSocket.send(JSON.stringify({ type: 'login', username: this.state.user.username }));
       }
 
-      this.router.navigateToRoute('home');
+      this.hasLogin = true;
+
+      if(this.prevLocation.includes('/user')) {
+        this.router.navigateToRoute('user', { username: decodeURI(this.prevLocation.slice(6)) });
+      }
+      else if(this.prevLocation.includes('/pin')) {
+        this.router.navigateToRoute('pin', { id: decodeURI(this.prevLocation.slice(5)) });
+      }
+      else {
+        this.router.navigateToRoute('home');
+      }
     }
   }
 }

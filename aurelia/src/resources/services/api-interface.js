@@ -28,6 +28,13 @@ export class ApiInterface {
   }
 
   // Add here
+  likePin(pinID, username) {
+    return({ like: true });
+  }
+
+  deletePin(pinID) {
+    return({ delete: true });
+  }
 
   getUserNames(username) {
     return(
@@ -62,33 +69,37 @@ export class ApiInterface {
   }
 
   getUser(user) {
-    return(
-      this.http.fetch(`/user/login`, {
-                 method: 'POST',
-                 credentials: 'same-origin',
-                 headers: {
-                   'Accept': 'application/json',
-                   'Content-Type': 'application/json'
-                 },
-                 body: JSON.stringify(user)
-               })
-               .then(response => response.json())
-               .then(data => data)
-    );
+    // return(
+    //   this.http.fetch(`/user/login`, {
+    //              method: 'POST',
+    //              credentials: 'same-origin',
+    //              headers: {
+    //                'Accept': 'application/json',
+    //                'Content-Type': 'application/json'
+    //              },
+    //              body: JSON.stringify(user)
+    //            })
+    //            .then(response => response.json())
+    //            .then(data => data)
+    // );
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    return({ get: true, expire: date.getTime() });
   }
 
   logoutUser() {
-    return(
-      this.http.fetch(`/user/logout`, {
-                 method: 'POST',
-                 credentials: 'same-origin',
-                 headers: {
-                   'Accept': 'application/json'
-                 }
-               })
-               .then(response => response.json())
-               .then(data => data)
-    );
+    // return(
+    //   this.http.fetch(`/user/logout`, {
+    //              method: 'POST',
+    //              credentials: 'same-origin',
+    //              headers: {
+    //                'Accept': 'application/json'
+    //              }
+    //            })
+    //            .then(response => response.json())
+    //            .then(data => data)
+    // );
+    return({ logout: true });
   }
 
   editUser(user) {

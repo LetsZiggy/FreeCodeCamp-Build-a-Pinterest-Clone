@@ -1,0 +1,12 @@
+template
+  #content.pin-content
+    #pin-image-container
+      img#pin-image(src="${pin.image}" error.trigger="imageError(pin)")
+    #pin-details
+      #pin-title ${pin.title}
+      #pin-poster
+        span#pin-poster-by By:
+        a#pin-poster-username(route-href="route: user; params.bind: { username: pin.poster === state.user.username ? undefined : pin.poster }" data-is-owner="${pin.poster === state.user.username ? 'true' : 'false'}") ${pin.poster}
+      button#pin-like(click.delegate="likePost()" data-user-like.bind="pin.likes.includes(state.user.username)")
+        img#pin-like-image(src="https://material.io/tools/icons/static/icons/baseline-favorite_border-24px.svg")
+        span#pin-like-count ${pinLikes}
