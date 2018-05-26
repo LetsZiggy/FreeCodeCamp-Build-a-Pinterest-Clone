@@ -50,7 +50,7 @@ export class Pin {
 
   async likePost() {
     if(this.state.user.username) {
-      let response = await this.api.likePin(this.pin.id, this.state.user.username);
+      let response = await this.api.likePin({ id: this.pin.id }, this.state.user.username);
 
       if(response.like) {
         let likeElem = document.getElementById('pin-like');
@@ -71,6 +71,16 @@ export class Pin {
     else {
       this.state.user.toLike = this.pin;
       this.router.navigateToRoute('login');
+    }
+  }
+
+  async deletePost(pin) {
+    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username);
+
+    if(response.delete) {
+      let index = this.state.pins.map((v, i, a) => v.id).indexOf(this.pin.id);
+      this.state.pins.splice(index, 1);
+      this.router.navigateToRoute('user');
     }
   }
 

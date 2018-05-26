@@ -141,7 +141,7 @@ export class User {
 
   async likePost(pin) {
     if(this.state.user.username) {
-      let response = await this.api.likePin(pin.id, this.state.user.username);
+      let response = await this.api.likePin({ id: pin.id }, this.state.user.username);
 
       if(response.like) {
         let index = pin.likes.indexOf(this.state.user.username);
@@ -163,7 +163,7 @@ export class User {
   }
 
   async deletePost(pin) {
-    let response = await this.api.deletePin(pin.id);
+    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username);
 
     if(response.delete) {
       let index = this.state.pins.map((v, i, a) => v.id).indexOf(pin.id);

@@ -27,13 +27,68 @@ export class ApiInterface {
     this.http = HttpClient;
   }
 
-  // Add here
-  likePin(pinID, username) {
+  getPins() {
+    return(
+      this.http.fetch(`/pins/get`, {
+                 method: 'GET',
+                 credentials: 'same-origin',
+                 headers: {
+                  'Accept': 'application/json'
+                 }
+               })
+               .then(response => response.json())
+               .then(data => data.taken)
+    );
+  }
+
+  likePin(pin, username) {
+    // return(
+    //   this.http.fetch(`/pins/like`, {
+    //              method: 'POST',
+    //              credentials: 'same-origin',
+    //              headers: {
+    //                'Accept': 'application/json',
+    //                'Content-Type': 'application/json'
+    //              },
+    //              body: JSON.stringify({ pin: pin, username: username })
+    //            })
+    //            .then(response => response.json())
+    //            .then(data => data.taken)
+    // );
     return({ like: true });
   }
 
-  deletePin(pinID) {
+  deletePin(pin, username) {
+    // return(
+    //   this.http.fetch(`/pins/delete`, {
+    //              method: 'POST',
+    //              credentials: 'same-origin',
+    //              headers: {
+    //                'Accept': 'application/json',
+    //                'Content-Type': 'application/json'
+    //              },
+    //              body: JSON.stringify({ pin: pin, username: username })
+    //            })
+    //            .then(response => response.json())
+    //            .then(data => data.taken)
+    // );
     return({ delete: true });
+  }
+
+  addPin(pin, username) {
+    return(
+      this.http.fetch(`/pins/add`, {
+                 method: 'POST',
+                 credentials: 'same-origin',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({ pin: pin, username: username })
+               })
+               .then(response => response.json())
+               .then(data => data.taken)
+    );
   }
 
   getUserNames(username) {

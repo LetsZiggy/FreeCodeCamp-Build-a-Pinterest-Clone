@@ -6,8 +6,8 @@ export const state = {
     interval: null
   },
   user: {
-    // username: 'testUser',
-    username: null,
+    username: 'testUser',
+    // username: null,
     expire: null,
     interval: null,
     toLike: null,

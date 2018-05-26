@@ -139,7 +139,7 @@ export class Home {
 
   async likePost(pin) {
     if(this.state.user.username) {
-      let response = await this.api.likePin(pin.id, this.state.user.username);
+      let response = await this.api.likePin({ id: pin.id }, this.state.user.username);
 
       if(response.like) {
         let index = pin.likes.indexOf(this.state.user.username);
@@ -161,7 +161,7 @@ export class Home {
   }
 
   async deletePost(pin) {
-    let response = await this.api.deletePin(pin.id);
+    let response = await this.api.deletePin({ id: this.pin.id }, this.state.user.username);
 
     if(response.delete) {
       let index = this.state.pins.map((v, i, a) => v.id).indexOf(pin.id);
@@ -175,10 +175,10 @@ export class Home {
     let imageRatio = pin.elem.children[1].children[0].naturalWidth / pin.elem.children[1].children[0].naturalHeight;
 
     if(imageRatio <= 1.5) {
-      pin.elem.classList.add('wide-20');
+      pin.elem.classList.add('wide-10');
     }
     else {
-      pin.elem.classList.add('wide-40');
+      pin.elem.classList.add('wide-20');
     }
   }
 

@@ -109,7 +109,7 @@ export class AddPin {
   }
 
   addPin() {
-    let response = this.api.addPin(this.image, this.title, this.state.user.username);
+    let response = this.api.addPin({ image: this.image, title: this.title }, this.state.user.username);
 
     if(response.add) {
       let pin = {

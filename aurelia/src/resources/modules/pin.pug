@@ -4,9 +4,13 @@ template
       img#pin-image(src="${pin.image}" error.trigger="imageError(pin)")
     #pin-details
       #pin-title ${pin.title}
+      #pin-like-count
+        span#pin-like-count-by Total Likes:
+        span#pin-like-count-amount ${pinLikes}
       #pin-poster
         span#pin-poster-by By:
         a#pin-poster-username(route-href="route: user; params.bind: { username: pin.poster === state.user.username ? undefined : pin.poster }" data-is-owner="${pin.poster === state.user.username ? 'true' : 'false'}") ${pin.poster}
-      button#pin-like(click.delegate="likePost()" data-user-like.bind="pin.likes.includes(state.user.username)")
+      button#pin-like(if.bind="pin.poster !== state.user.username" click.delegate="likePost()" data-user-like.bind="pin.likes.includes(state.user.username)")
         img#pin-like-image(src="https://material.io/tools/icons/static/icons/baseline-favorite_border-24px.svg")
-        span#pin-like-count ${pinLikes}
+      button#pin-delete(if.bind="pin.poster === state.user.username" click.delegate="deletePost()")
+        img#pin-delete-image(src="https://material.io/tools/icons/static/icons/baseline-delete-24px.svg")
