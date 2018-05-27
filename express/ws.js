@@ -47,6 +47,7 @@ function wsLike(id, data) {
     }
   });
 }
+
 function wsUnlike(id, data) {
   wss.clients.forEach((client) => {
     if(client.id !== id) {
@@ -57,6 +58,7 @@ function wsUnlike(id, data) {
     }
   });
 }
+
 function wsDelete(id, data) {
   wss.clients.forEach((client) => {
     if(client.id !== id) {
@@ -67,6 +69,7 @@ function wsDelete(id, data) {
     }
   });
 }
+
 function wsAdd(id, data) {
   wss.clients.forEach((client) => {
     if(client.id !== id) {
